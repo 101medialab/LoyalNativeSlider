@@ -2,7 +2,6 @@ package com.hkm.slider.SliderTypes;
 
 import android.animation.LayoutTransition;
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -217,6 +216,10 @@ public class ZoomableView extends BaseSliderView {
 
 
     public class PhotoTapListener implements PhotoViewAttacher.OnPhotoTapListener {
+
+        @Override
+        public void onOutsidePhotoTap() {
+        }
 
         @Override
         public void onPhotoTap(View view, float x, float y) {

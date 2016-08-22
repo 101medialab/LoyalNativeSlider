@@ -27,7 +27,7 @@ gen/
 
 # Gradle files
 .gradle/
-.idea/
+.idea
 gradle/
 .gradle/
 /*/build/

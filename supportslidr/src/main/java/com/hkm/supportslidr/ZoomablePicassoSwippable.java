@@ -209,6 +209,11 @@ public class ZoomablePicassoSwippable extends AppCompatActivity implements Slidr
             float yPercentage = y * 100f;
             //    Tool.trace(zoomimage.this,  String.format(PHOTO_TAP_TOAST_STRING, xPercentage, yPercentage, view == null ? 0 : view.getId()));
         }
+
+        @Override
+        public void onOutsidePhotoTap() {
+            
+        }
     }
 
     private class MatrixChangeListener implements PhotoViewAttacher.OnMatrixChangedListener {

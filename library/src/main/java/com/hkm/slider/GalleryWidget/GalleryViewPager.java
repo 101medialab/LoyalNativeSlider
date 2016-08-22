@@ -6,6 +6,7 @@ import android.graphics.PointF;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,6 +17,7 @@ import com.hkm.slider.TouchView.TouchImageView;
  * This class implements method to help <b>TouchImageView</b> fling, draggin and scaling.
  */
 public class GalleryViewPager extends ViewPager {
+    private static final String TAG = GalleryViewPager.class.getSimpleName();
 
     PointF last;
     public TouchImageView mCurrentView;
@@ -52,8 +54,6 @@ public class GalleryViewPager extends ViewPager {
     public boolean onTouchEvent(MotionEvent event) {
 
         if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
-            //super.onInterceptTouchEvent(event);
-
             float endX = event.getX();
             float endY = event.getY();
             if (isAClick(startX, endX, startY, endY)) {
@@ -103,7 +103,6 @@ public class GalleryViewPager extends ViewPager {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
-            //super.onInterceptTouchEvent(event);
 
             float endX = event.getX();
             float endY = event.getY();
@@ -112,7 +111,7 @@ public class GalleryViewPager extends ViewPager {
                     mOnItemClickListener.onItemClicked(mCurrentView, getCurrentItem());
                 }
             } else {
-                super.onInterceptTouchEvent(event);
+                return onParentInterceptTouchEvent(event);
             }
         }
 
@@ -125,19 +124,28 @@ public class GalleryViewPager extends ViewPager {
         float[] difference = handleMotionEvent(event);
 
         if (mCurrentView.pagerCanScroll()) {
-            return super.onInterceptTouchEvent(event);
+            return onParentInterceptTouchEvent(event);
         } else {
             if (difference != null && mCurrentView.onRightSide && difference[0] < 0) //move right
             {
-                return super.onInterceptTouchEvent(event);
+                return onParentInterceptTouchEvent(event);
             }
             if (difference != null && mCurrentView.onLeftSide && difference[0] > 0) //move left
             {
-                return super.onInterceptTouchEvent(event);
+                return onParentInterceptTouchEvent(event);
             }
             if (difference == null && (mCurrentView.onLeftSide || mCurrentView.onRightSide)) {
-                return super.onInterceptTouchEvent(event);
+                return onParentInterceptTouchEvent(event);
             }
+        }
+        return false;
+    }
+
+    protected boolean onParentInterceptTouchEvent(MotionEvent event) {
+        try {
+            return super.onInterceptTouchEvent(event);
+        } catch (IllegalArgumentException ex) {
+            Log.e(TAG, "encountered AOSP issue #64553, ignoring...", ex);
         }
         return false;
     }
