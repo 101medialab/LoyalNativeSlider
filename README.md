@@ -1,16 +1,15 @@
 # Loyal Native Slider
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Loyal%20Native%20Slider-brightgreen.svg?style=flat)][6][ ![Download](https://api.bintray.com/packages/jjhesk/maven/library/images/download.svg) ][7][![Android Gems](http://www.android-gems.com/badge/jjhesk/LoyalNativeSlider.svg?branch=master)][8][![Gitter](https://badges.gitter.im/Join Chat.svg)][9][![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jjhesk/loyalnativeslider/trend.png)][13]
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Loyal%20Native%20Slider-brightgreen.svg?style=flat)][6][ ![Download](https://api.bintray.com/packages/jjhesk/maven/library/images/download.svg) ][7][![Android Gems](http://www.android-gems.com/badge/jjhesk/LoyalNativeSlider.svg?branch=master)][8][![Gitter](https://badges.gitter.im/Join Chat.svg)][9]
 
- [![Throughput Graph](https://graphs.waffle.io/jjhesk/LoyalNativeSlider/throughput.svg)][14]
-
-Master: [![Build Status](https://travis-ci.org/jjhesk/LoyalNativeSlider.svg)](https://travis-ci.org/jjhesk/LoyalNativeSlider)
+[![Throughput Graph](https://graphs.waffle.io/jjhesk/LoyalNativeSlider/throughput.svg)][14]
 
 This is an amazing image slider for the Android platform. I decided to open source this because there is really not an attractive, convenient slider widget in Android. You can easily load images from an internet URL, drawable, or file. And there are many kinds of amazing animations you can choose. :-D
 
+##Demo Apk
+Please also check the latest release testing apk from the [log history](loghistory.md)
+
 ## Usage
-
 ### Step 1
-
 #### Gradle
 [![Download](https://api.bintray.com/packages/jjhesk/maven/library/images/download.svg) ](https://bintray.com/jjhesk/maven/library/_latestVersion)
 
@@ -19,10 +18,9 @@ For the most comprehensive collection of artifacts, point your Maven at: `http:/
 
 ```gradle
 dependencies {
-    compile 'com.hkm.loyalslider:library:1.9.1'
+    compile 'com.hkm.loyalslider:library:1.9.4'
 }
 ```
-
 
 ### Step 2 - setup the xml
 
@@ -79,7 +77,7 @@ binding data from json or your own data providers
 completion of the `arrayList` with your own type `T` , `T` as your data type
 
 ### Step 9
-call `mSliderLayout.loadSliderList` or `.addSliderList` or `.addSlider` independently. finally, check the result. For more variant and options you may [check out the sample and testing code from here.](https://github.com/jjhesk/LoyalNativeSlider/tree/master/weblnslider/src/main/java/com/hkm/loyalns/demos)
+call `mSliderLayout.loadSliderList` or `.addSliderList` or `.addSlider` independently. finally, check the result. For more variant and options you may
 
 ====
 
@@ -126,41 +124,6 @@ Please visit [Wiki](https://github.com/daimajia/AndroidImageSlider/wiki) for the
 
 If there are someone who I do not mention here, please accept my sincere appologies and tell me.
 
-
-###Log History
-
-###v1.9.1
-- update get color using contextcompat
-
-###v1.9.0
-- android build tool 2.1.0
-- android support library 23.4.0
-
-###v1.8.2
-- auto adjustment for each image height when scroll
-- android build tool 2.0.0
-- android support library 23.3.0
-- fixed bad image urls from the demo app
-- added demo example code for the new feature.
-
-###v1.8.0
-- Adding call method to enable final detection of the tallest layout among all the loaded sliders. This method is only available thru using calls from `loadSliderList` and `addSliderList`. Because all slides needed to be rendered until all heights are found from each slide, there will be an slight delay from the first render of the sliderLayout. [issue #45](https://github.com/jjhesk/LoyalNativeSlider/issues/45)
-
-###v1.6.0
-- add glide. As mentioned from all other recommendations, this library will be now the first choice of the support module to render images. That say all slider will support Gif files now.
-- support list insert feature. Instead of having slide to be added one by one, there is a new way to insert items as a list that will be more efficient.
-
-###v1.5.5
-- [fixed all the related bugs](https://github.com/jjhesk/LoyalNativeSlider/releases/tag/1.5.5)
-
-###v1.5.0
-- Zoomable view
-- news feed view
-
-###v1.4.1
-- Add local storage enable for picasso
-- adapting multiple images in one slide config 2-4
-
 ###Bitcoin Donation Accepted
 ![wallet](http://s32.postimg.org/sdd1oio1t/qrwallet.jpg)
 Open Donation - USD: [![OPEN](http://i.imgur.com/wUWK6e1.jpg)][1]
@@ -196,6 +159,5 @@ License
 [10]: https://github.com/jjhesk/LoyalNativeSlider/blob/master/AppDemo/src/main/java/com/hkm/sliderdemo/MainActivity.java
 [11]: https://github.com/jjhesk/LoyalNativeSlider/blob/master/library/src/main/res/values/attrs.xml#L3-L54
 [12]: https://github.com/daimajia/AndroidImageSlider/releases/download/v1.0.9/AndroidImageSlider-Eclipse.zip
-[13]: https://bitdeli.com/free
 [14]: https://waffle.io/jjhesk/LoyalNativeSlider/metrics
 [15]: https://github.com/bumptech/glide
