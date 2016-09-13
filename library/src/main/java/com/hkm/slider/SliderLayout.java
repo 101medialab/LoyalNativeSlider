@@ -83,10 +83,6 @@ public class SliderLayout extends RelativeLayout {
      */
     private InfiniteViewPager mViewPager;
     /**
-     * multiViewPager
-     */
-    private MultiViewPager mMViewPager;
-    /**
      * InfiniteViewPager adapter.
      */
     private SliderAdapter mSliderAdapter;
@@ -256,7 +252,7 @@ public class SliderLayout extends RelativeLayout {
     private Handler postHandler = new Handler();
     private ImageView mButtonLeft, mButtonRight;
     private int mLWidthB, mRWidthB;
-    private boolean mLopen, mRopen, button_side_function_flip = false;
+    private boolean mLopen, mRopen, button_side_function_flip = true;
     private ArrowControl arrow_instance;
 
     private void navigation_button_initialization() {

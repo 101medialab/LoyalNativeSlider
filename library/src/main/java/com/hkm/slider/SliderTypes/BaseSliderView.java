@@ -21,6 +21,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -51,6 +52,7 @@ import java.lang.ref.WeakReference;
  * if you want to show progressbar, you just need to set a progressbar id as @+id/loading_bar.
  */
 public abstract class BaseSliderView {
+    private static final String TAG = BaseSliderView.class.getSimpleName();
     protected Object current_image_holder;
     protected Context mContext;
     protected boolean imageLoaded = false;
