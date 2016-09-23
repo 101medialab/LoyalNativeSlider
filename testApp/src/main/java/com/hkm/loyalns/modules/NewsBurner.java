@@ -1,6 +1,6 @@
 package com.hkm.loyalns.modules;
 
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.DrawableRes;
@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.hkm.ezwebview.Util.Fx9C;
 import com.hkm.ezwebview.webviewleakfix.NonLeakingWebView;
 import com.hkm.loyalns.R;
 import com.hkm.slider.SliderTypes.BaseSliderView;

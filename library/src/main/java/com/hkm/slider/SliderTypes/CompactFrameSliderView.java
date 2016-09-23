@@ -1,7 +1,7 @@
 package com.hkm.slider.SliderTypes;
 
 import android.annotation.TargetApi;
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.LayoutRes;
