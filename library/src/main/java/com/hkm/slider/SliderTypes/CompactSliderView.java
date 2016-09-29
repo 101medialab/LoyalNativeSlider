@@ -2,12 +2,11 @@ package com.hkm.slider.SliderTypes;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -198,7 +197,13 @@ public class CompactSliderView extends BaseSliderView {
                         @Override
                         public boolean onLongClick(View v) {
                             prepare_request_save_image = mreq;
-                            final saveImageDialog saveImageDial = new saveImageDialog();
+                            final SaveImageDialog saveImageDial = new SaveImageDialog(mContext);
+                            saveImageDial.setOnPositiveButtonListener(new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    saveImageActionTrigger();
+                                }
+                            });
                             saveImageDial.show(fmg.get(), "DESC_SAVE_IM");
                             return false;
                         }

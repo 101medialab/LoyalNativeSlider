@@ -392,7 +392,13 @@ public abstract class BaseSliderView {
                     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
                     @Override
                     public boolean onLongClick(View v) {
-                        final saveImageDialog saveImageDial = new saveImageDialog();
+                        final SaveImageDialog saveImageDial = new SaveImageDialog(mContext);
+                        saveImageDial.setOnPositiveButtonListener(new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                saveImageActionTrigger();
+                            }
+                        });
                         saveImageDial.show(fmg.get(), mDescription);
                         return false;
                     }
@@ -582,6 +588,7 @@ public abstract class BaseSliderView {
                     workGetImage(imageView);
                     return 1;
                 } catch (Exception e) {
+                    Log.e(TAG, "failed to retrieve image", e);
                     tried++;
                 }
             }
@@ -645,7 +652,17 @@ public abstract class BaseSliderView {
 
     @SuppressLint("ValidFragment")
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public class saveImageDialog extends DialogFragment {
+    public static class SaveImageDialog extends DialogFragment {
+        protected Context mContext = null;
+
+        protected AlertDialog.OnClickListener onPositiveButtonListener = null;
+        protected AlertDialog.OnClickListener onNegativeButtonListener = null;
+
+        public SaveImageDialog(Context context) {
+            super();
+            mContext = context;
+        }
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             if (mContext == null) return null;
@@ -654,16 +671,30 @@ public abstract class BaseSliderView {
             builder.setMessage(R.string.save_image)
                     .setPositiveButton(R.string.yes_save, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            saveImageActionTrigger();
+                            dialog.dismiss();
+                            if (onPositiveButtonListener != null) {
+                                onPositiveButtonListener.onClick(dialog, id);
+                            }
                         }
                     })
                     .setNegativeButton(R.string.no_keep, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
+                            if (onNegativeButtonListener != null) {
+                                onNegativeButtonListener.onClick(dialog, id);
+                            }
                         }
                     });
             // Create the AlertDialog object and return it
             return builder.create();
+        }
+
+        public void setOnPositiveButtonListener(AlertDialog.OnClickListener onPositiveButtonListener) {
+            this.onPositiveButtonListener = onPositiveButtonListener;
+        }
+
+        public void setOnNegativeButtonListener(AlertDialog.OnClickListener onNegativeButtonListener) {
+            this.onNegativeButtonListener = onNegativeButtonListener;
         }
     }
 
