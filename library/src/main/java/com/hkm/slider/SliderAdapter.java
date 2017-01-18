@@ -1,6 +1,7 @@
 package com.hkm.slider;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.hkm.slider.SliderTypes.BaseSliderView;
+import com.hkm.slider.Tricks.InfinitePagerAdapter;
+import com.hkm.slider.Tricks.InfiniteViewPager;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,6 +28,10 @@ public class SliderAdapter<T extends BaseSliderView> extends PagerAdapter implem
     private ArrayList<T> mImageContents;
     private int mLoadConfiguration = POSITION_NONE;
     private SliderLayout.OnViewConfigurationDetected mSetViewListener;
+
+    protected OnLoadCompletedListener onLoadCompletedListener = null;
+    protected int minHeightRequired = 0;
+
 
     public SliderAdapter(Context context) {
         mContext = context;
@@ -99,6 +106,34 @@ public class SliderAdapter<T extends BaseSliderView> extends PagerAdapter implem
     public void removeAllSliders() {
         mImageContents.clear();
         notifyDataSetChanged();
+    }
+
+    public void setOnLoadCompletedListener (OnLoadCompletedListener onLoadCompletedListener){
+        this.onLoadCompletedListener = onLoadCompletedListener;
+    }
+
+    public interface OnLoadCompletedListener {
+        public void onLoadCompleted(SliderAdapter adapter);
+    }
+
+    public int getMinHeightRequired() {
+        return minHeightRequired;
+    }
+
+    @Override
+    public void finishUpdate(ViewGroup container) {
+        super.finishUpdate(container);
+        if (container instanceof InfiniteViewPager) {
+            for (BaseSliderView sliderView: mImageContents) {
+                if (minHeightRequired < sliderView.getCaptionHeight()) {
+                    minHeightRequired = sliderView.getCaptionHeight() + (int)(mContext.getResources().getDimension(R.dimen.caption_text_lower_margin));
+                }
+            }
+        }
+
+        if (onLoadCompletedListener != null) {
+            onLoadCompletedListener.onLoadCompleted(this);
+        }
     }
 
     @Override

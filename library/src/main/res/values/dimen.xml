@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="button_margin_horizontal">10.9dp</dimen>
+    <dimen name="caption_text_lower_padding">3dp</dimen>
+    <dimen name="caption_text_lower_margin">8dp</dimen>
 </resources>

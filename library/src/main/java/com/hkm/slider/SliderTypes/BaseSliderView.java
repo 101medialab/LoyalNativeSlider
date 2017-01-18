@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.content.res.Resources;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
@@ -22,6 +23,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
@@ -42,6 +44,7 @@ import com.squareup.picasso.Target;
 import java.io.File;
 import java.lang.ref.WeakReference;
 
+
 /**
  * When you want to make your own slider view, you must extends from this class.
  * BaseSliderView provides some useful methods.
@@ -51,7 +54,7 @@ import java.lang.ref.WeakReference;
  */
 public abstract class BaseSliderView {
     private static final String TAG = BaseSliderView.class.getSimpleName();
-    protected Object current_image_holder;
+    protected Object current_image_holder, current_caption_holder, current_slider_holder;
     protected Context mContext;
     protected boolean imageLoaded = false;
     private RequestCreator rq = null;
@@ -67,11 +70,15 @@ public abstract class BaseSliderView {
      */
     private int mEmptyPlaceHolderRes;
 
+    private String mCaption;
     private String mUrl;
     private File mFile;
     private int mRes;
     private int mSlideNumber;
+    private int mSlideHeight;
     protected OnSliderClickListener mOnSliderClickListener;
+    private TextView mTextView;
+    private ImageView mImageView;
 
     protected boolean mErrorDisappear, mLongClickSaveImage;
     protected boolean mImageLocalStorageEnable;
@@ -104,6 +111,8 @@ public abstract class BaseSliderView {
         this.mBundle = new Bundle();
         mLongClickSaveImage = false;
         mImageLocalStorageEnable = false;
+        mTextView = new TextView(context);
+        mImageView = new ImageView(context);
     }
 
     public final void setSlideOrderNumber(final int order) {
@@ -206,6 +215,15 @@ public abstract class BaseSliderView {
         }
         mRes = res;
         return this;
+    }
+
+    public BaseSliderView caption(String caption) {
+        mCaption = caption;
+        return this;
+    }
+
+    public String getCaption() {
+        return mCaption;
     }
 
     /**
@@ -509,9 +527,17 @@ public abstract class BaseSliderView {
         reportStatusEnd(true);
     }
 
+    protected void setImageCaption(final TextView captionTextView) {
+        mTextView = captionTextView;
+        mTextView.setText(getCaption());
+        mTextView.setVisibility(View.INVISIBLE);
+    }
 
-    protected void applyImageWithSmartBothAndNotifyHeight(View v, final ImageView target) {
+    protected void applyImageWithSmartBothAndNotifyHeight(final View v, final ImageView target, final TextView captionTextView) {
         current_image_holder = target;
+        current_caption_holder = captionTextView;
+        current_slider_holder = v;
+        mImageView = target;
         LoyalUtil.hybridImplementation(getUrl(), target, getContext(), new Runnable() {
             @Override
             public void run() {
@@ -526,6 +552,15 @@ public abstract class BaseSliderView {
         hideLoadingProgress(v);
         triggerOnLongClick(v);
         reportStatusEnd(true);
+    }
+
+
+    public TextView getCaptionTextView() {
+        return mTextView;
+    }
+
+    public ImageView getLoadedImageView() {
+        return mImageView;
     }
 
     private void reportStatusEnd(boolean b) {
@@ -772,8 +807,30 @@ public abstract class BaseSliderView {
         void onEnd(boolean result, BaseSliderView target);
     }
 
+    public int getCaptionHeight() {
+        int textWidth = mTextView.getWidth();
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(Resources.getSystem().getDisplayMetrics().widthPixels,
+                View.MeasureSpec.EXACTLY);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+
+        if (textWidth < 1) {
+            return 0;
+        }
+
+        mTextView.measure(widthMeasureSpec, heightMeasureSpec);
+        return mTextView.getMeasuredHeight();
+
+    }
+
     public Object getImageView() {
         return current_image_holder;
     }
 
+    public TextView getTextView() {
+        return mTextView;
+    }
+
+    public Object getSliderView() {
+        return current_slider_holder;
+    }
 }

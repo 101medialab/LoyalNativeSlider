@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:slide="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,5 +8,164 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--xmlns:capp="http://schemas.android.com/apk/res-auto"-->
+        <!--xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"-->
+        <!--xmlns:tool="http://schemas.android.com/tools"-->
+        <!--android:id="@+id/framer"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="#ffffffff">-->
+
+        <!--&lt;!&ndash;    tool:ignore="WebViewLayout"&ndash;&gt;-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:weightSum="1">-->
+
+            <!--<ScrollView-->
+                <!--android:id="@+id/scroller_container"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:layout_weight="0.99">-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!--&lt;!&ndash; brand and title-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:layout_marginBottom="10dp"-->
+                 <!--&ndash;&gt;-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/article_title"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_marginRight="10dp"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:maxLines="4"-->
+                        <!--android:textSize="21sp" />-->
+
+
+                    <!--<View-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="10dp" />-->
+
+                    <!--&lt;!&ndash;<include layout="@layout/article_metainfo" />&ndash;&gt;-->
+
+                    <!--&lt;!&ndash;<com.hkm.advancedtoolbar.socialbar.combar&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:id="@+id/social_bar_combar"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_marginLeft="10dp"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_marginTop="10dp" />&ndash;&gt;-->
+
+                    <!--<View-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="10dp" />-->
+
+                    <!--&lt;!&ndash; video view &ndash;&gt;-->
+                    <!--<RelativeLayout-->
+                        <!--android:id="@+id/framevideoplayer"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="432dp"-->
+                        <!--android:background="#ff1a1c19"-->
+                        <!--android:padding="1dp"-->
+                        <!--android:visibility="gone">-->
+
+                        <!--<com.hkm.ezwebview.webviewleakfix.NonLeakingWebView-->
+                            <!--android:id="@+id/videoplayer"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_centerInParent="true"-->
+                            <!--android:background="#ff1a1c19"-->
+                            <!--android:visibility="gone" />-->
+
+                        <!--&lt;!&ndash;<com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar xmlns:fab="http://schemas.android.com/apk/res-auto"&ndash;&gt;-->
+                            <!--&lt;!&ndash;android:id="@+id/progressloadingbarpx"&ndash;&gt;-->
+                            <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                            <!--&lt;!&ndash;android:layout_centerInParent="true"&ndash;&gt;-->
+                            <!--&lt;!&ndash;fab:mlpb_enable_circle_background="true"&ndash;&gt;-->
+                            <!--&lt;!&ndash;fab:mlpb_inner_radius="18dp"&ndash;&gt;-->
+                            <!--&lt;!&ndash;fab:mlpb_progress_color="#ff79777b"&ndash;&gt;-->
+                            <!--&lt;!&ndash;fab:mlpb_show_arrow="false" />&ndash;&gt;-->
+                    <!--</RelativeLayout>-->
+
+
+                    <!--<RelativeLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content">-->
+
+                        <!--<ImageView-->
+                            <!--android:id="@+id/image_view"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="511dp"-->
+                            <!--android:layout_marginLeft="0dp"-->
+                            <!--android:layout_marginRight="0dp"-->
+                            <!--android:layout_marginTop="10dp"-->
+                            <!--android:scaleType="centerCrop"-->
+                            <!--android:visibility="gone" />-->
+
+
+                        <!--<include layout="@layout/article_slider" />-->
+                    <!--</RelativeLayout>-->
+
+                    <!--<View-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="10dp" />-->
+
+                    <!--&lt;!&ndash; article display view &ndash;&gt;-->
+                    <!--<RelativeLayout-->
+                        <!--android:id="@+id/content_article_frame"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="0dp"-->
+                        <!--android:layout_marginRight="0dp"-->
+                        <!--android:visibility="gone">-->
+
+                        <!--<com.hkm.ezwebview.webviewleakfix.NonLeakingWebView-->
+                            <!--android:id="@+id/content_block"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginBottom="10dp"-->
+                            <!--android:visibility="gone"-->
+                            <!--tool:ignore="WebViewLayout" />-->
+                    <!--</RelativeLayout>-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/text_source"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="10dp"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:textSize="14sp" />-->
+
+                    <!--<FrameLayout-->
+                        <!--android:id="@+id/extrapost"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="100dp" />-->
+
+                <!--</LinearLayout>-->
+            <!--</ScrollView>-->
+
+            <!--<FrameLayout-->
+                <!--android:id="@+id/adFragment"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+
+        <!--</LinearLayout>-->
+
+        <!--<ProgressBar-->
+            <!--android:id="@+id/progressc"-->
+            <!--android:layout_width="60dp"-->
+            <!--android:layout_height="60dp"-->
+            <!--android:layout_centerInParent="true" />-->
+
+    <!--</RelativeLayout>-->
 
 </RelativeLayout>

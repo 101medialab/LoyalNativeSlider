@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +22,9 @@ import com.hkm.loyalns.demos.ZoomView_Three;
 import com.hkm.loyalns.demos.ZoomView_Single;
 import com.hkm.loyalns.demos.ZoomViewPager2;
 import com.hkm.loyalns.demos.SliderAdjust2;
+import com.hkm.slider.SliderLayout;
+import com.hkm.slider.SliderTypes.AdjustableSlide;
+import com.hkm.slider.SliderTypes.BaseSliderView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -49,6 +53,21 @@ public class TheMain extends AppCompatActivity implements AdapterView.OnItemClic
         }
         mList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items));
         mList.setOnItemClickListener(this);
+
+//        SliderLayout sliderLayout = (SliderLayout) findViewById(R.id.slider_layout_framer_now);
+//
+//        ArrayList<AdjustableSlide> slide = new ArrayList<>();
+//        for (int i=1; i<4; i++) {
+//            AdjustableSlide adjustableSlide = new AdjustableSlide(this);
+//            adjustableSlide
+//                    .image("http://popbee.com/image/2017/01/non-traditional-wedding-dress-2017_00"+(20-(i-1))+"_image-"+i+".jpg")
+//                    .setScaleType(BaseSliderView.ScaleType.Fit)
+//                    .caption(String.valueOf(i));
+//            slide.add(adjustableSlide);
+//
+//            Log.d("TheMain", "slide height = "+adjustableSlide.getSlideMeasuredHeight());
+//        }
+//        sliderLayout.loadSliderList(slide);
     }
 
 

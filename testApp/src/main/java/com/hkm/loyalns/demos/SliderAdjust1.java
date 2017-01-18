@@ -54,7 +54,7 @@ public class SliderAdjust1 extends BaseApp {
             textSliderView
                     .image(urls[h])
                     .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .enableSaveImageByLongClick(getFragmentManager())
+                    .enableSaveImageByLongClick(getSupportFragmentManager())
                     .setOnSliderClickListener(this);
             //add your extra information
             list.add(textSliderView);

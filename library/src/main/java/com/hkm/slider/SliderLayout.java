@@ -22,6 +22,7 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.hkm.slider.Animations.BaseAnimationInterface;
 import com.hkm.slider.Indicators.NumContainer;
@@ -33,7 +34,6 @@ import com.hkm.slider.Tricks.ArrowControl;
 import com.hkm.slider.Tricks.FixedSpeedScroller;
 import com.hkm.slider.Tricks.InfinitePagerAdapter;
 import com.hkm.slider.Tricks.InfiniteViewPager;
-import com.hkm.slider.Tricks.MultiViewPager;
 import com.hkm.slider.Tricks.ViewPagerEx;
 
 import java.lang.reflect.Field;
@@ -68,6 +68,7 @@ import static com.hkm.slider.SliderLayout.PresentationConfig.byVal;
  * pager_animation
  */
 public class SliderLayout extends RelativeLayout {
+    public String TAG = "SliderLayout";
     public static final int
             ZOOMABLE = 1, NONZOOMABLE = 0;
 
@@ -155,6 +156,7 @@ public class SliderLayout extends RelativeLayout {
     private int mPagerMargin;
     private int buttondr, buttondl;
     private int frame_width, frame_height;
+    private int fitHeight = 0;
     /**
      * this is the limit for switching from dot types into the page number type
      */
@@ -175,6 +177,11 @@ public class SliderLayout extends RelativeLayout {
      */
     private OnImageLoadWithAdjustableHeight mOnImageLoadWithAdjustableHeight;
 
+    private int maxTextViewHeight = 0;
+
+    private int maxImageHeight = 0;
+
+    private ViewPagerEx.OnPageChangeListener listener;
     /**
      * {@link com.hkm.slider.Indicators.PagerIndicator} shape, rect or oval.
      *
@@ -335,8 +342,35 @@ public class SliderLayout extends RelativeLayout {
         return this;
     }
 
+    protected SliderAdapter.OnLoadCompletedListener onLoadCompletedListener = new SliderAdapter.OnLoadCompletedListener() {
+        @Override
+        public void onLoadCompleted(SliderAdapter adapter) {
+            if (adapter.getMinHeightRequired() < 1) {
+                 return;
+            }
+
+            int layoutMargin = (int)(getResources().getDimension(R.dimen.caption_text_lower_margin));
+            maxTextViewHeight = adapter.getMinHeightRequired();
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, maxTextViewHeight);
+            params.setMargins(layoutMargin, layoutMargin, layoutMargin, layoutMargin);
+            getCurrentSlider().getTextView()
+                    .setLayoutParams(params);
+
+            if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
+                RelativeLayout.LayoutParams h = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, maxTextViewHeight + fitHeight + layoutMargin);
+                setLayoutParams(h);
+            } else if (getLayoutParams() instanceof LinearLayout.LayoutParams) {
+                LinearLayout.LayoutParams h = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, maxTextViewHeight + fitHeight + layoutMargin);
+                setLayoutParams(h);
+            }
+            temp_adjustment_height = maxTextViewHeight + fitHeight + layoutMargin;
+
+        }
+    };
+
     private void pagerSetup() {
         mSliderAdapter = new SliderAdapter(mContext);
+        mSliderAdapter.setOnLoadCompletedListener(onLoadCompletedListener);
         if (pagerType == NONZOOMABLE) {
             PagerAdapter wrappedAdapter = new InfinitePagerAdapter(mSliderAdapter);
             mViewPager = (InfiniteViewPager) findViewById(R.id.daimajia_slider_viewpager);
@@ -970,6 +1004,15 @@ public class SliderLayout extends RelativeLayout {
         return getRealAdapter().getSliderView(realCount);
     }
 
+    public BaseSliderView getSliderItemView(int position) {
+        if (getRealAdapter() == null)
+            throw new IllegalStateException("You did not set a slider adapter");
+
+        int count = getRealAdapter().getCount();
+        int realCount = position % count;
+        return getRealAdapter().getSliderView(realCount);
+    }
+
     /**
      * remove  the slider at the position. Notice: It's a not perfect method, a very small bug still exists.
      *
@@ -1048,7 +1091,7 @@ public class SliderLayout extends RelativeLayout {
 
     public void setAutoAdjustImageByHeight() {
         mAutoAdjustSliderHeight = true;
-        addOnPageChangeListener(new ViewPagerEx.OnPageChangeListener() {
+        listener = new ViewPagerEx.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 setFitToCurrentImageHeight();
@@ -1068,8 +1111,14 @@ public class SliderLayout extends RelativeLayout {
                     temp_adjustment_height = -1;
                 }
             }
-        });
+
+        };
+        addOnPageChangeListener(listener);
         setAutoAdjustImageFullContentMaxHeight(CONTEXT_DEFAULT_MAX_HEIGHT_AS_SCREEN_HEIGHT);
+    }
+
+    public void removePageChangedListener(){
+        removeOnPageChangeListener(listener);
     }
 
     private int temp_adjustment_height = -1;
@@ -1107,32 +1156,13 @@ public class SliderLayout extends RelativeLayout {
             ImageView p = (ImageView) getCurrentSlider().getImageView();
             if (p.getDrawable() != null) {
                 int current_width = getMeasuredWidth();
-                //(int) LoyalUtil.convertDpToPixel(image.getIntrinsicHeight(), getContext())
                 Drawable image = p.getDrawable();
                 float ratio = (float) image.getIntrinsicHeight() / (float) image.getIntrinsicWidth();
 
-                final int fit_height = (int) (current_width * ratio);
-                // Rect rec = new Rect(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-                // requestRectangleOnScreen(rec);
-                // onLayout(true, 0, 0, p.getDrawable().getIntrinsicWidth(), p.getDrawable().getIntrinsicHeight());
-                if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
-                    //  RelativeLayout.LayoutParams m = (RelativeLayout.LayoutParams) getLayoutParams();
-                    // int[] rules = m.getRules();
-                    RelativeLayout.LayoutParams h = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, fit_height);
-                    /*   if (rules.length > 0) {
-                           for (int i = 0; i < rules.length; i++) {
-                            h.addRule(rules[i]);
-                           }
-                         }
-                    */
-                    setLayoutParams(h);
-                } else if (getLayoutParams() instanceof LinearLayout.LayoutParams) {
-                    //   LinearLayout.LayoutParams m = (LinearLayout.LayoutParams) getLayoutParams();
-                    //   int[] rules = m.getRules();
-                    LinearLayout.LayoutParams h = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, fit_height);
-                    setLayoutParams(h);
-                }
-                temp_adjustment_height = fit_height;
+                getCurrentSlider().getTextView().setVisibility(View.VISIBLE);
+
+                fitHeight = (int)(getResources().getDimension(R.dimen.caption_text_lower_padding)) + (int) (current_width * ratio);
+
             }
         }
     }
@@ -1140,5 +1170,6 @@ public class SliderLayout extends RelativeLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
     }
 }

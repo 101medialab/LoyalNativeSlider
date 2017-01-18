@@ -110,7 +110,7 @@ public class ExampleClassic extends BaseApp {
                             .description(name)
                             .image(maps.get(name))
                             .setScaleType(BaseSliderView.ScaleType.Fit)
-                            .enableSaveImageByLongClick(getFragmentManager())
+                            .enableSaveImageByLongClick(getSupportFragmentManager())
                             .setOnSliderClickListener(ExampleClassic.this);
                     //add your extra information
                     textSliderView.getBundle().putString("extra", name);

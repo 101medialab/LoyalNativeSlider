@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:slide="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/slider_wrapping"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="visible">
+    <!--  android:layout_height="@dimen/item_height"-->
+
+    <com.hkm.slider.SliderLayout
+        android:id="@+id/slider_layout_framer_now"
+        android:layout_width="match_parent"
+        android:layout_height="511dp"
+        slide:auto_cycle="true"
+        slide:indicator_visibility="invisible"
+        slide:slider_side_buttons="false" />
+
+    <RelativeLayout
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/slide_left"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                android:paddingBottom="6dp"
+                android:paddingTop="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/slider_arrow_l_v2" />
+
+            <TextView
+                android:id="@+id/display_pager"
+                android:layout_width="85dp"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="" />
+
+            <ImageButton
+                android:id="@+id/slide_right"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                android:paddingBottom="6dp"
+                android:paddingTop="6dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/slider_arrow_r_v2" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

@@ -75,7 +75,7 @@ public class BigScreenDL extends AppCompatActivity implements BaseSliderView.OnS
                     .image(maps.get(name))
                     .enableImageLocalStorage()
                     .setScaleType(BaseSliderView.ScaleType.CenterInside)
-                    .enableSaveImageByLongClick(getFragmentManager())
+                    .enableSaveImageByLongClick(getSupportFragmentManager())
                     .setOnSliderClickListener(this);
             //add your extra information
             textSliderView.getBundle().putString("extra", name);
@@ -94,7 +94,7 @@ public class BigScreenDL extends AppCompatActivity implements BaseSliderView.OnS
                 .image(image)
                 .enableImageLocalStorage()
                 .setScaleType(BaseSliderView.ScaleType.CenterInside)
-                .enableSaveImageByLongClick(getFragmentManager())
+                .enableSaveImageByLongClick(getSupportFragmentManager())
                 .setOnSliderClickListener(this);
 
         mDemoSlider.addSlider(textSliderView);

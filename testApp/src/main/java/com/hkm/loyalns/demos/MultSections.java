@@ -79,7 +79,7 @@ public class MultSections extends BaseApp {
                     .description(getString(R.string.head_line_01))
                     .image(getString(R.string.hl_image_01))
                     .setScaleType(BaseSliderView.ScaleType.CenterCrop)
-                    .enableSaveImageByLongClick(getFragmentManager())
+                    .enableSaveImageByLongClick(getSupportFragmentManager())
                     .enableImageLocalStorage();
             //add your extra information
             // textSliderView.getBundle().putString("extra", name);
@@ -98,7 +98,7 @@ public class MultSections extends BaseApp {
                             "https://www.youtube.com/watch?v=uOx3Zdl4738"
                     })
                     .setScaleType(BaseSliderView.ScaleType.CenterCrop)
-                    .enableSaveImageByLongClick(getFragmentManager())
+                    .enableSaveImageByLongClick(getSupportFragmentManager())
                     .enableImageLocalStorage()
                     .setOnSliderClickListener(this);
 
@@ -119,7 +119,7 @@ public class MultSections extends BaseApp {
 
                     .description(getString(R.string.head_line_02))
                     .setScaleType(BaseSliderView.ScaleType.CenterCrop)
-                    .enableSaveImageByLongClick(getFragmentManager())
+                    .enableSaveImageByLongClick(getSupportFragmentManager())
                     .enableImageLocalStorage()
                     .setOnSliderClickListener(this);
 
@@ -141,7 +141,7 @@ public class MultSections extends BaseApp {
 
                     .description(getString(R.string.head_line_02))
                     .setScaleType(BaseSliderView.ScaleType.CenterCrop)
-                    .enableSaveImageByLongClick(getFragmentManager())
+                    .enableSaveImageByLongClick(getSupportFragmentManager())
                     .enableImageLocalStorage()
                     .setOnSliderClickListener(this);
 
@@ -168,7 +168,7 @@ public class MultSections extends BaseApp {
                     })
 
                     .setScaleType(BaseSliderView.ScaleType.CenterCrop)
-                    .enableSaveImageByLongClick(getFragmentManager())
+                    .enableSaveImageByLongClick(getSupportFragmentManager())
                     .enableImageLocalStorage()
                     .setOnSliderClickListener(this);
 
@@ -220,7 +220,7 @@ public class MultSections extends BaseApp {
 
 
                     .setScaleType(BaseSliderView.ScaleType.CenterCrop)
-                    .enableSaveImageByLongClick(getFragmentManager())
+                    .enableSaveImageByLongClick(getSupportFragmentManager())
                     .enableImageLocalStorage()
                     .setOnSliderClickListener(this);
 

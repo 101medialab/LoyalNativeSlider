@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -94,6 +96,7 @@ public class LoyalUtil {
                 .into(target, new Callback() {
                     @Override
                     public void onSuccess() {
+                        Log.d("LoyalUtil", "picasso on success");
                         callback.run();
                     }
 
@@ -111,8 +114,8 @@ public class LoyalUtil {
                 .into(target);
     }
 
-
-    public static void hybridImplementation(String u, final ImageView target, Context context, final Runnable callback) {
+    public static void hybridImplementation(String u, final ImageView target,
+                                            Context context, final Runnable callback) {
         if (u.contains(".gif")) {
             Glide.with(context).load(u).asGif()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -146,10 +149,10 @@ public class LoyalUtil {
      * @param context Context to get resources and device specific display metrics
      * @return A float value to represent px equivalent to dp depending on device density
      */
-    public static float convertDpToPixel(float dp, Context context) {
+    public static int convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        int px = (int)(dp * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
         return px;
     }
 
