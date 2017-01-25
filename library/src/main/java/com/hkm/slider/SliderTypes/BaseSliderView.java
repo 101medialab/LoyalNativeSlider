@@ -217,7 +217,7 @@ public abstract class BaseSliderView {
         return this;
     }
 
-    public BaseSliderView caption(String caption) {
+    public BaseSliderView setCaption(String caption) {
         mCaption = caption;
         return this;
     }
@@ -809,7 +809,7 @@ public abstract class BaseSliderView {
 
     public int getCaptionHeight() {
         int textWidth = mTextView.getWidth();
-        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(Resources.getSystem().getDisplayMetrics().widthPixels,
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(textWidth,
                 View.MeasureSpec.EXACTLY);
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
 

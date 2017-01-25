@@ -62,7 +62,7 @@ public class TheMain extends AppCompatActivity implements AdapterView.OnItemClic
 //            adjustableSlide
 //                    .image("http://popbee.com/image/2017/01/non-traditional-wedding-dress-2017_00"+(20-(i-1))+"_image-"+i+".jpg")
 //                    .setScaleType(BaseSliderView.ScaleType.Fit)
-//                    .caption(String.valueOf(i));
+//                    .setCaption(String.valueOf(i));
 //            slide.add(adjustableSlide);
 //
 //            Log.d("TheMain", "slide height = "+adjustableSlide.getSlideMeasuredHeight());

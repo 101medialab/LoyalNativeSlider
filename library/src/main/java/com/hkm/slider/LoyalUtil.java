@@ -96,7 +96,6 @@ public class LoyalUtil {
                 .into(target, new Callback() {
                     @Override
                     public void onSuccess() {
-                        Log.d("LoyalUtil", "picasso on success");
                         callback.run();
                     }
 
@@ -152,7 +151,7 @@ public class LoyalUtil {
     public static int convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        int px = (int)(dp * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
+        int px = Math.round(dp * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
         return px;
     }
 
