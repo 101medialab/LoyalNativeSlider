@@ -83,6 +83,8 @@ public abstract class BaseSliderView {
     protected boolean mErrorDisappear, mLongClickSaveImage;
     protected boolean mImageLocalStorageEnable;
 
+    protected OnImageSavedListener onImageSavedListener = null;
+
     private ImageLoadListener mLoadListener;
 
     private String mDescription;
@@ -262,6 +264,14 @@ public abstract class BaseSliderView {
 
     public Context getContext() {
         return mContext;
+    }
+
+    public OnImageSavedListener getOnImageSavedListener() {
+        return onImageSavedListener;
+    }
+
+    public void setOnImageSavedListener(OnImageSavedListener onImageSavedListener) {
+        this.onImageSavedListener = onImageSavedListener;
     }
 
     /**
@@ -571,12 +581,6 @@ public abstract class BaseSliderView {
 
     final android.os.Handler nh = new android.os.Handler();
 
-    private int notice_save_image_success = R.string.success_save_image;
-
-    public final void setMessageSaveImageSuccess(@StringRes final int t) {
-        notice_save_image_success = t;
-    }
-
     protected void workAroundGetImagePicasso() {
 
         final Target target = new Target() {
@@ -640,50 +644,21 @@ public abstract class BaseSliderView {
                                 nh.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (fmg == null) return;
-                                        String note = mContext.getString(notice_save_image_success);
-                                        final SMessage sm = SMessage.message(note);
-                                        sm.show(fmg.get(), "done");
-                                    }
+                                        if (onImageSavedListener != null) {
+                                            onImageSavedListener.onImageSaved(mDescription);
+                                        }
+                                   }
                                 });
                             }
                         }
                 );
             } else {
-                String m = mContext.getString(R.string.image_not_read);
-                final SMessage sm = SMessage.message(m);
-                sm.show(fmg.get(), "try again");
+                if (onImageSavedListener != null) {
+                    onImageSavedListener.onImageSaveFailed();
+                }
             }
         }
     }
-
-
-    @SuppressLint("ValidFragment")
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class SMessage extends DialogFragment {
-        public static SMessage message(final String mes) {
-            Bundle h = new Bundle();
-            h.putString("message", mes);
-            SMessage e = new SMessage();
-            e.setArguments(h);
-            return e;
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(getArguments().getString("message"))
-                    .setNeutralButton(R.string.okay_now, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-                    })
-            ;
-            return builder.create();
-        }
-    }
-
 
     @SuppressLint("ValidFragment")
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -832,5 +807,10 @@ public abstract class BaseSliderView {
 
     public Object getSliderView() {
         return current_slider_holder;
+    }
+
+    public interface OnImageSavedListener {
+        void onImageSaved(String description);
+        void onImageSaveFailed();
     }
 }
