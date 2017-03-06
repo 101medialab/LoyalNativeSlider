@@ -23,7 +23,7 @@ public abstract class AdvancedTextSliderView<TV extends TextView, Image extends 
         View v = LayoutInflater.from(getContext()).inflate(renderedLayoutTextBanner(), null);
         final Image target = (Image) v.findViewById(R.id.ns_slider_image);
         final TV description = (TV) v.findViewById(R.id.ns_slider_desc);
-        description.setText(getDescription());
+        setupDescription(description);
         bindEventAndShowPicasso(v, target);
         return v;
     }

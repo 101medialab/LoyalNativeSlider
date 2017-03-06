@@ -4,7 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Dialog;
-import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
@@ -18,7 +18,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -94,6 +93,8 @@ public abstract class BaseSliderView {
      * Scale type of the image.
      */
     protected ScaleType mScaleType = ScaleType.Fit;
+
+    protected Typeface mTypeface;
 
     /**
      * reference of the parent
@@ -221,6 +222,11 @@ public abstract class BaseSliderView {
 
     public BaseSliderView setCaption(String caption) {
         mCaption = caption;
+        return this;
+    }
+
+    public BaseSliderView descriptionTypeface(Typeface typeface) {
+        mTypeface = typeface;
         return this;
     }
 
@@ -508,6 +514,13 @@ public abstract class BaseSliderView {
                 reportStatusEnd(false);
             }
         });
+    }
+
+    protected void setupDescription(TextView descTextView) {
+        descTextView.setText(mDescription);
+        if (mTypeface != null) {
+            descTextView.setTypeface(mTypeface);
+        }
     }
 
     protected void applyImageWithGlide(View v, final ImageView targetImageView) {
