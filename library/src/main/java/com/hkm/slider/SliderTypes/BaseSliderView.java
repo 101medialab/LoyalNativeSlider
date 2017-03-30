@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +22,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -302,7 +305,7 @@ public abstract class BaseSliderView {
      */
     public BaseSliderView enableSaveImageByLongClick(FragmentManager mfmg) {
         mLongClickSaveImage = true;
-        mDefaultLongClickListener = null;
+//        mDefaultLongClickListener = null;
         this.fmg = new WeakReference<FragmentManager>(mfmg);
         return this;
     }
@@ -421,24 +424,9 @@ public abstract class BaseSliderView {
      */
     private void triggerOnLongClick(View mView) {
         if (mLongClickSaveImage && fmg != null) {
-            if (mDefaultLongClickListener == null) {
-                mDefaultLongClickListener = new View.OnLongClickListener() {
-                    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-                    @Override
-                    public boolean onLongClick(View v) {
-                        final SaveImageDialog saveImageDial = new SaveImageDialog(mContext);
-                        saveImageDial.setOnPositiveButtonListener(new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                saveImageActionTrigger();
-                            }
-                        });
-                        saveImageDial.show(fmg.get(), mDescription);
-                        return false;
-                    }
-                };
+            if (mDefaultLongClickListener != null) {
+                mView.setOnLongClickListener(mDefaultLongClickListener);
             }
-            mView.setOnLongClickListener(mDefaultLongClickListener);
         }
     }
 
@@ -677,20 +665,22 @@ public abstract class BaseSliderView {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class SaveImageDialog extends DialogFragment {
         protected Context mContext = null;
+        protected int mTheme;
 
         protected AlertDialog.OnClickListener onPositiveButtonListener = null;
         protected AlertDialog.OnClickListener onNegativeButtonListener = null;
 
-        public SaveImageDialog(Context context) {
+        public SaveImageDialog(Context context, int theme) {
             super();
             mContext = context;
+            mTheme = theme;
         }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             if (mContext == null) return null;
             // Use the Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, mTheme);
             builder.setMessage(R.string.save_image)
                     .setPositiveButton(R.string.yes_save, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -708,8 +698,10 @@ public abstract class BaseSliderView {
                             }
                         }
                     });
+            Dialog dialog = builder.create();
+            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);
             // Create the AlertDialog object and return it
-            return builder.create();
+            return dialog;
         }
 
         public void setOnPositiveButtonListener(AlertDialog.OnClickListener onPositiveButtonListener) {
