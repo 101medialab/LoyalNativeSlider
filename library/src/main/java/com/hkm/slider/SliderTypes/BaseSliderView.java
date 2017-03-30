@@ -699,7 +699,7 @@ public abstract class BaseSliderView {
                         }
                     });
             Dialog dialog = builder.create();
-            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);
+            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             // Create the AlertDialog object and return it
             return dialog;
         }
