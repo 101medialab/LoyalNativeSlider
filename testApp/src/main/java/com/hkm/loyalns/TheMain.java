@@ -4,27 +4,23 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.hkm.loyalns.demos.BigScreenDL;
-import com.hkm.loyalns.demos.BigScreenDemo;
+import com.hkm.loyalns.demos.FullScreenDemoActivity;
 import com.hkm.loyalns.demos.DelayInitalzation;
 import com.hkm.loyalns.demos.ExampleClassic;
 import com.hkm.loyalns.demos.MultSections;
 import com.hkm.loyalns.demos.NewsArticle;
 import com.hkm.loyalns.demos.SliderAdjust1;
-import com.hkm.loyalns.demos.ZoomScreenSlider;
+import com.hkm.loyalns.demos.ZoomScreenSliderActivity;
 import com.hkm.loyalns.demos.ZoomView_Three;
 import com.hkm.loyalns.demos.ZoomView_Single;
 import com.hkm.loyalns.demos.ZoomViewPager2;
 import com.hkm.loyalns.demos.SliderAdjust2;
-import com.hkm.slider.SliderLayout;
-import com.hkm.slider.SliderTypes.AdjustableSlide;
-import com.hkm.slider.SliderTypes.BaseSliderView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -87,8 +83,8 @@ public class TheMain extends AppCompatActivity implements AdapterView.OnItemClic
 
     public void initList() {
 
-        data.put("Full screen", BigScreenDemo.class);
-        data.put("Zoom in&out", ZoomScreenSlider.class);
+        data.put("Full screen", FullScreenDemoActivity.class);
+        data.put("Zoom in&out", ZoomScreenSliderActivity.class);
         data.put("News Pager", NewsArticle.class);
         data.put("MultiSection - allow multiple mini sliders to fit into a single large slide. The max slides is suggested to 4", MultSections.class);
         data.put("Classic Example - with content height adjustment", ExampleClassic.class);

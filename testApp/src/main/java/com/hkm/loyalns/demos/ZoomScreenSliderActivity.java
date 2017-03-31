@@ -3,7 +3,6 @@ package com.hkm.loyalns.demos;
 import android.annotation.TargetApi;
 import android.os.Build;
 
-import com.hkm.loyalns.demos.BigScreenDemo;
 import com.hkm.slider.SliderLayout;
 import com.hkm.slider.SliderTypes.BaseSliderView;
 import com.hkm.slider.SliderTypes.ZoomableView;
@@ -13,7 +12,7 @@ import java.util.HashMap;
 /**
  * Created by hesk on 15/12/15.
  */
-public class ZoomScreenSlider extends BigScreenDemo {
+public class ZoomScreenSliderActivity extends FullScreenDemoActivity {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void defaultCompleteSlider(final SliderLayout slide, final HashMap<String, String> maps) {
