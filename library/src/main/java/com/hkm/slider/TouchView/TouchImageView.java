@@ -20,7 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 @SuppressLint("NewApi")
-public class TouchImageView extends ImageView {
+public class TouchImageView extends android.support.v7.widget.AppCompatImageView {
 
     private int positionForTouchImageView = -1;
 
@@ -354,8 +354,13 @@ public class TouchImageView extends ImageView {
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
-        bmWidth = bm.getWidth();
-        bmHeight = bm.getHeight();
+        if (bm == null) {
+            bmWidth = 1;
+            bmHeight = 1;
+        } else {
+            bmWidth = bm.getWidth();
+            bmHeight = bm.getHeight();
+        }
     }
     @Override
     protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec)
