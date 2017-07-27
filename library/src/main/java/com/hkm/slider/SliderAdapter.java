@@ -22,6 +22,7 @@ import java.util.List;
  * A slider adapter
  */
 public class SliderAdapter<T extends BaseSliderView> extends PagerAdapter implements BaseSliderView.ImageLoadListener {
+    private static final String TAG = SliderAdapter.class.getSimpleName();
 
     private SparseArray<Integer> measurement_height = new SparseArray<>();
     private Context mContext;
@@ -39,25 +40,17 @@ public class SliderAdapter<T extends BaseSliderView> extends PagerAdapter implem
     }
 
     public void addSlider(T slider) {
+        int orderNumber = 0;
         slider.setOnImageLoadListener(this);
+        slider.setSlideOrderNumber(orderNumber);
         mImageContents.add(slider);
-        addSingleNotification();
+        orderNumber++;
+        notifyDataSetChanged();
     }
 
     public void loadSliders(List<T> slider) {
         mLoadConfiguration = POSITION_UNCHANGED;
         addSliders(slider);
-    }
-
-    private void addSingleNotification() {
-        Iterator<T> it = mImageContents.iterator();
-        int orderNumber = 0;
-        while (it.hasNext()) {
-            T slide = it.next();
-            slide.setSlideOrderNumber(orderNumber);
-            orderNumber++;
-        }
-        notifyDataSetChanged();
     }
 
     public void addSliders(List<T> slider) {
@@ -183,7 +176,7 @@ public class SliderAdapter<T extends BaseSliderView> extends PagerAdapter implem
                 @Override
                 public void onGlobalLayout() {
                     int debug = layer.getHeight();
-                    Log.d("checkLayoutSlideHeight", debug + " px");
+                    Log.d("checkLayoutSlideHeight", String.format("%d px", debug));
                     measurement_height.append(position, layer.getHeight());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         layer.getViewTreeObserver().removeOnGlobalLayoutListener(this);

@@ -14,7 +14,7 @@ import com.hkm.slider.SliderAdapter;
  */
 public class InfinitePagerAdapter extends PagerAdapter {
 
-    private static final String TAG = "InfinitePagerAdapter";
+    private static final String TAG = InfinitePagerAdapter.class.getSimpleName();
     private static final boolean DEBUG = false;
 
     private SliderAdapter adapter;
@@ -31,6 +31,10 @@ public class InfinitePagerAdapter extends PagerAdapter {
     public int getCount() {
         // warning: scrolling to very high values (1,000,000+) results in
         // strange drawing behaviour
+        int realCount = getRealCount();
+        if (realCount < 2) {
+            return realCount;
+        }
         return Integer.MAX_VALUE;
     }
 
@@ -43,12 +47,14 @@ public class InfinitePagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        if(getRealCount() == 0){
+        if(getRealCount() < 1){
             return null;
         }
         int virtualPosition = position % getRealCount();
-        debug("instantiateItem: real position: " + position);
-        debug("instantiateItem: virtual position: " + virtualPosition);
+        if (DEBUG) {
+            Log.d(TAG, String.format("instantiateItem: real position: %d", position));
+            Log.d(TAG, String.format("instantiateItem: virtual position: %d", virtualPosition));
+        }
 
         // only expose virtual position to the inner adapter
         return adapter.instantiateItem(container, virtualPosition);
@@ -56,12 +62,14 @@ public class InfinitePagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        if(getRealCount() == 0){
+        if(getRealCount() < 1){
             return;
         }
         int virtualPosition = position % getRealCount();
-        debug("destroyItem: real position: " + position);
-        debug("destroyItem: virtual position: " + virtualPosition);
+        if (DEBUG) {
+            Log.d(TAG, String.format("destroyItem: real position: %d", position));
+            Log.d(TAG, String.format("destroyItem: virtual position: %d", virtualPosition));
+        }
 
         // only expose virtual position to the inner adapter
         adapter.destroyItem(container, virtualPosition, object);
@@ -99,10 +107,4 @@ public class InfinitePagerAdapter extends PagerAdapter {
     /*
      * End delegation
      */
-
-    private void debug(String message) {
-        if (DEBUG) {
-            Log.d(TAG, message);
-        }
-    }
 }

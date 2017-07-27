@@ -773,7 +773,7 @@ public class SliderLayout extends RelativeLayout {
 
             case MotionEvent.ACTION_MOVE:
                 if (getRealAdapter().getCount() <= 1) {
-                    return true;
+                    return false;
                 }
                 break;
         }
@@ -806,7 +806,7 @@ public class SliderLayout extends RelativeLayout {
             final FixedSpeedScroller scroller = new FixedSpeedScroller(mViewPager.getContext(), interpolator, period);
             mScroller.set(mViewPager, scroller);
         } catch (Exception e) {
-
+            Log.e(TAG, "failed on setSliderTransformDuration", e);
         }
     }
 
@@ -848,9 +848,6 @@ public class SliderLayout extends RelativeLayout {
             }
             return Smart;
         }
-
-        // public abstract <T> getInstance();
-
     }
 
     /**
@@ -1170,6 +1167,5 @@ public class SliderLayout extends RelativeLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
     }
 }

@@ -29,6 +29,8 @@ import java.util.HashMap;
  * Created by hesk on 17/3/16.
  */
 public class BigScreenDL extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
+    private static final String TAG = BigScreenDL.class.getSimpleName();
+
     protected SliderLayout mDemoSlider;
 
     protected boolean shouldRequestAPIBeforeLayoutRender() {
@@ -87,7 +89,7 @@ public class BigScreenDL extends AppCompatActivity implements BaseSliderView.OnS
     private void add_one_more_slide() {
         TextSliderView textSliderView = new TextSliderView(this);
         String name = DataProvider.getRandomSingle().getKey();
-        String image = DataProvider.getRandomSingle().getValue();
+        final String image = DataProvider.getRandomSingle().getValue();
         // initialize a SliderLayout
         textSliderView
                 .description(name)

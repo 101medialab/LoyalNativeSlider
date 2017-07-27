@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * Created by hesk on 7/3/16.
  */
-public class TheMain extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     LinkedHashMap<String, Class> data = new LinkedHashMap<>();
     ListView mList;
     ArrayList<Class> o = new ArrayList<>();
@@ -65,7 +65,7 @@ public class TheMain extends AppCompatActivity implements AdapterView.OnItemClic
 //                    .setCaption(String.valueOf(i));
 //            slide.add(adjustableSlide);
 //
-//            Log.d("TheMain", "slide height = "+adjustableSlide.getSlideMeasuredHeight());
+//            Log.d("MainActivity", "slide height = "+adjustableSlide.getSlideMeasuredHeight());
 //        }
 //        sliderLayout.loadSliderList(slide);
     }

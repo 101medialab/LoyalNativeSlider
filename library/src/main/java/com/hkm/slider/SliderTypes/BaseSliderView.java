@@ -3,8 +3,10 @@ package com.hkm.slider.SliderTypes;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Typeface;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
@@ -24,15 +26,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
+import com.hkm.slider.BuildConfig;
 import com.hkm.slider.CapturePhotoUtils;
 import com.hkm.slider.LoyalUtil;
 import com.hkm.slider.R;
@@ -56,6 +51,8 @@ import java.lang.ref.WeakReference;
  */
 public abstract class BaseSliderView {
     private static final String TAG = BaseSliderView.class.getSimpleName();
+    private static final int REQUEST_EXTERNAL_STORAGE = 0x30;
+
     protected Object current_image_holder, current_caption_holder, current_slider_holder;
     protected Context mContext;
     protected boolean imageLoaded = false;
@@ -310,6 +307,10 @@ public abstract class BaseSliderView {
         return this;
     }
 
+    public View.OnLongClickListener getLongClickListener() {
+        return mDefaultLongClickListener;
+    }
+
     /**
      * to set custom listener for long click event
      *
@@ -347,70 +348,6 @@ public abstract class BaseSliderView {
     public BaseSliderView enableImageLocalStorage() {
         mImageLocalStorageEnable = true;
         return this;
-    }
-
-
-    protected void bindEventShowGlide(final View v, final ImageView targetImageView) {
-        RequestOptions requestOptions = new RequestOptions();
-
-        v.setOnClickListener(click_triggered);
-        final RequestManager glideRM = Glide.with(mContext);
-        RequestBuilder rq;
-        if (mUrl != null) {
-            rq = glideRM.load(mUrl);
-        } else if (mFile != null) {
-            rq = glideRM.load(mFile);
-        } else if (mRes != 0) {
-            rq = glideRM.load(mRes);
-        } else {
-            return;
-        }
-
-        if (getEmpty() != 0) {
-            requestOptions.placeholder(getEmpty());
-        }
-        if (getError() != 0) {
-            requestOptions.error(getError());
-        }
-
-        switch (mScaleType) {
-            case Fit:
-                requestOptions.fitCenter();
-                break;
-            case CenterCrop:
-                requestOptions.centerCrop();
-                break;
-            case CenterInside:
-                requestOptions.fitCenter();
-                break;
-        }
-
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
-        if (mTargetWidth > 0 || mTargetHeight > 0) {
-            requestOptions.override(mTargetWidth, mTargetHeight);
-        }
-
-        rq.apply(requestOptions);
-
-        rq.listener(new RequestListener() {
-            @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target target, boolean isFirstResource) {
-                reportStatusEnd(false);
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(Object resource, Object model, com.bumptech.glide.request.target.Target target, DataSource dataSource, boolean isFirstResource) {
-                hideLoadingProgress(v);
-                triggerOnLongClick(v);
-                reportStatusEnd(true);
-                return false;
-            }
-        });
-        rq.transition(DrawableTransitionOptions.withCrossFade());
-
-        additionalGlideModifier(rq);
-        rq.into(targetImageView);
     }
 
     protected void additionalGlideModifier(RequestBuilder requestBuilder) {
@@ -530,33 +467,6 @@ public abstract class BaseSliderView {
         if (mTypeface != null) {
             descTextView.setTypeface(mTypeface);
         }
-    }
-
-    protected void applyImageWithGlide(View v, final ImageView targetImageView) {
-        current_image_holder = targetImageView;
-        LoyalUtil.glideImplementation(getUrl(), targetImageView, getContext());
-        hideLoadingProgress(v);
-        triggerOnLongClick(v);
-        reportStatusEnd(true);
-        imageLoaded = true;
-    }
-
-    protected void applyImageWithPicasso(View v, final ImageView targetImageView) {
-        current_image_holder = targetImageView;
-        LoyalUtil.picassoImplementation(getUrl(), targetImageView, getContext());
-        hideLoadingProgress(v);
-        triggerOnLongClick(v);
-        imageLoaded = true;
-        reportStatusEnd(true);
-    }
-
-    protected void applyImageWithSmartBoth(View v, final ImageView target) {
-        current_image_holder = target;
-        LoyalUtil.hybridImplementation(getUrl(), target, getContext());
-        hideLoadingProgress(v);
-        triggerOnLongClick(v);
-        imageLoaded = true;
-        reportStatusEnd(true);
     }
 
     protected void setImageCaption(final TextView captionTextView) {
@@ -736,7 +646,14 @@ public abstract class BaseSliderView {
             ImageView fast = (ImageView) current_image_holder;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (mContext.getApplicationContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    //   mContext.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, AnyNumber);
+                    if (BuildConfig.DEBUG) {
+                        Log.d(TAG, "require permission to write external storage; requesting...");
+                    }
+                    ActivityCompat.requestPermissions(
+                            (Activity)mContext,
+                            new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_EXTERNAL_STORAGE
+                    );
                 } else {
                     getImageTask t = new getImageTask(fast);
                     t.execute();
