@@ -197,7 +197,7 @@ public class CompactSliderView extends BaseSliderView {
                         @Override
                         public boolean onLongClick(View v) {
                             prepare_request_save_image = mreq;
-                            final SaveImageDialog saveImageDial = new SaveImageDialog(mContext);
+                            final SaveImageDialog saveImageDial = new SaveImageDialog(mContext.getApplicationContext(), R.style.Theme_AppCompat);
                             saveImageDial.setOnPositiveButtonListener(new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {

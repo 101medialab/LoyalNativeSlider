@@ -29,7 +29,7 @@
             android:name=".demos.ExampleClassic"
             android:theme="@style/Full" />
         <activity
-            android:name=".demos.BigScreenDemo"
+            android:name=".demos.FullScreenDemoActivity"
             android:theme="@style/Full" />
         <activity
             android:name=".demos.BigScreenDL"
@@ -41,7 +41,7 @@
             android:name=".demos.NewsArticle"
             android:theme="@style/Full" />
         <activity
-            android:name=".demos.ZoomScreenSlider"
+            android:name=".demos.ZoomScreenSliderActivity"
             android:theme="@style/Full" />
         <activity
             android:name=".demos.SliderAdjust1"

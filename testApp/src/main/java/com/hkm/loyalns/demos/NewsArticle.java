@@ -4,7 +4,7 @@ package com.hkm.loyalns.demos;
  * Created by hesk on 15/12/15.
  * Test of API on the news feed
  */
-public class NewsArticle extends BigScreenDemo {
+public class NewsArticle extends FullScreenDemoActivity {
    // protected HBEditorialClient clientApi;
 
   /*  protected void defaultCompleteSlider(SliderLayout slide, List<ArticleData> list) {

@@ -1,17 +1,28 @@
 package com.hkm.loyalns.demos;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.hkm.loyalns.R;
 import com.hkm.loyalns.Util.DataProvider;
 import com.hkm.loyalns.modules.CustomNumberView;
@@ -22,13 +33,18 @@ import com.hkm.slider.SliderTypes.BaseSliderView;
 import com.hkm.slider.SliderTypes.TextSliderView;
 import com.hkm.slider.Tricks.ViewPagerEx;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by hesk on 19/8/15.
  */
-public class BigScreenDemo extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
+public class FullScreenDemoActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
+    private static final String TAG = FullScreenDemoActivity.class.getSimpleName();
     protected SliderLayout mDemoSlider;
 
     protected boolean shouldRequestAPIBeforeLayoutRender() {
@@ -38,8 +54,8 @@ public class BigScreenDemo extends AppCompatActivity implements BaseSliderView.O
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void defaultCompleteSlider(final SliderLayout slide, final HashMap<String, String> maps) {
         ArrayList<TextSliderView> list = new ArrayList<>();
-        for (String name : maps.keySet()) {
-            TextSliderView textSliderView = new TextSliderView(this);
+        for (final String name : maps.keySet()) {
+            final TextSliderView textSliderView = new TextSliderView(this);
             // initialize a SliderLayout
             textSliderView
                     .description(name)
@@ -50,6 +66,78 @@ public class BigScreenDemo extends AppCompatActivity implements BaseSliderView.O
                     .setOnSliderClickListener(this);
             //add your extra information
             textSliderView.getBundle().putString("extra", name);
+
+            textSliderView.setSliderLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    saveImage(maps.get(name));
+                    return false;
+                }
+
+                protected void saveImage(String imageUrl) {
+                    Log.d(TAG, String.format("saveImage: %s",imageUrl));
+                    Glide.with(FullScreenDemoActivity.this)
+                            .load(imageUrl)
+                            .asBitmap()
+                            .into(new SimpleTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                    new AsyncTask<Void, Void, Void>() {
+                                        Throwable error;
+
+                                        @Override
+                                        protected void onPreExecute() {
+                                            super.onPreExecute();
+
+                                            String[] permissions = {
+                                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                            };
+                                            int REQUEST_EXTERNAL_STORAGE = 1;
+                                            ActivityCompat.requestPermissions(
+                                                    FullScreenDemoActivity.this,
+                                                    permissions,
+                                                    REQUEST_EXTERNAL_STORAGE
+                                            );
+                                        }
+
+                                        @Override
+                                        protected Void doInBackground(Void... voids) {
+                                            File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "");
+                                            try {
+                                                if (!directory.mkdirs()) {
+                                                    Log.e(TAG, String.format("failed to create directory; directory=%s", directory.getAbsolutePath()));
+                                                }
+
+                                                File imageFile = File.createTempFile("demo", ".jpg", directory);
+                                                FileOutputStream outputStream = new FileOutputStream(imageFile);
+                                                if (resource.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)) {
+                                                    Log.d(TAG, String.format("image saved successfully; filename=%s", imageFile.getAbsolutePath()));
+                                                } else {
+                                                    Log.w(TAG, "image is not saved");
+                                                }
+                                            } catch (IOException ex) {
+                                                Log.e(TAG, "failed to save image file", ex);
+                                                error = ex;
+                                            }
+                                            return null;
+                                        }
+
+                                        @Override
+                                        protected void onPostExecute(Void aVoid) {
+                                            super.onPostExecute(aVoid);
+                                            if (error == null) {
+                                                Toast.makeText(FullScreenDemoActivity.this, "image saved successfully", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(FullScreenDemoActivity.this, "cannot save image", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }.execute();
+                                }
+                            });
+                }
+            });
+            textSliderView.enableSaveImageByLongClick(getSupportFragmentManager());
+
             list.add(textSliderView);
         }
         slide.loadSliderList(list);
@@ -88,7 +176,7 @@ public class BigScreenDemo extends AppCompatActivity implements BaseSliderView.O
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mDemoSlider.setPresetTransformer(((TextView) view).getText().toString());
-                Toast.makeText(BigScreenDemo.this, ((TextView) view).getText().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(FullScreenDemoActivity.this, ((TextView) view).getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
