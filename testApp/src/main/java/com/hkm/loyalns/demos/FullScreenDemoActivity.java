@@ -20,9 +20,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
+//import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+//import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.hkm.loyalns.R;
 import com.hkm.loyalns.Util.DataProvider;
 import com.hkm.loyalns.modules.CustomNumberView;
@@ -77,11 +78,11 @@ public class FullScreenDemoActivity extends AppCompatActivity implements BaseSli
                 protected void saveImage(String imageUrl) {
                     Log.d(TAG, String.format("saveImage: %s",imageUrl));
                     Glide.with(FullScreenDemoActivity.this)
-                            .load(imageUrl)
                             .asBitmap()
+                            .load(imageUrl)
                             .into(new SimpleTarget<Bitmap>() {
                                 @Override
-                                public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                public void onResourceReady(final Bitmap resource, Transition<? super Bitmap> transition) {
                                     new AsyncTask<Void, Void, Void>() {
                                         Throwable error;
 
