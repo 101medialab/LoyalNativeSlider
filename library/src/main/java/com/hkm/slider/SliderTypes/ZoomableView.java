@@ -21,15 +21,15 @@ import com.hkm.slider.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import uk.co.senab.photoview.PhotoView;
-import uk.co.senab.photoview.PhotoViewAttacher;
+import com.github.chrisbanes.photoview.OnMatrixChangedListener;
+import com.github.chrisbanes.photoview.PhotoView;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
 
 /**
  * Created by hesk on 15/12/15.
  */
 public class ZoomableView extends BaseSliderView {
-    private final Activity activity;
-    public final static String LOG_TAG = "ZoomableViewpp";
+    public final static String LOG_TAG = ZoomableView.class.getSimpleName();
     private boolean
             animateCloseButton = false,
             bottomFadeDescription = true;
@@ -63,8 +63,6 @@ public class ZoomableView extends BaseSliderView {
 
     public ZoomableView(Activity context) {
         super(context);
-        activity = context;
-
     }
 
     public ZoomableView(boolean closeButtonAnimation, Activity context) {
@@ -172,7 +170,6 @@ public class ZoomableView extends BaseSliderView {
 
                 mAttacher.setOnMatrixChangeListener(new MatrixChangeListener(mAttacher, cover, cornerbutton));
 
-                mAttacher.setOnPhotoTapListener(new PhotoTapListener());
                 circle.setVisibility(View.GONE);
                 mImage.post(new Runnable() {
                     @Override
@@ -182,9 +179,6 @@ public class ZoomableView extends BaseSliderView {
                                 true);
                     }
                 });
-                //slidrInf.unlock();
-                //mImage.getImmImage.getWidth()
-                //mAttacher.setScale(initial_zoom_factor);
             }
 
             @Override
@@ -214,22 +208,7 @@ public class ZoomableView extends BaseSliderView {
 
     }
 
-
-    public class PhotoTapListener implements PhotoViewAttacher.OnPhotoTapListener {
-
-        @Override
-        public void onOutsidePhotoTap() {
-        }
-
-        @Override
-        public void onPhotoTap(View view, float x, float y) {
-            float xPercentage = x * 100f;
-            float yPercentage = y * 100f;
-            //    Tool.trace(zoomimage.this,  String.format(PHOTO_TAP_TOAST_STRING, xPercentage, yPercentage, view == null ? 0 : view.getId()));
-        }
-    }
-
-    public class MatrixChangeListener implements PhotoViewAttacher.OnMatrixChangedListener {
+    public class MatrixChangeListener implements OnMatrixChangedListener {
         private final PhotoViewAttacher mAttacher;
         private final LinearLayout cover;
         private final ImageButton button;

@@ -26,8 +26,9 @@ import com.r0adkll.slidr.model.SlidrPosition;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import uk.co.senab.photoview.PhotoView;
-import uk.co.senab.photoview.PhotoViewAttacher;
+import com.github.chrisbanes.photoview.OnMatrixChangedListener;
+import com.github.chrisbanes.photoview.PhotoView;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
 
 /**
  * Created by hesk on 15/12/15.
@@ -163,7 +164,6 @@ public class ZoomablePicassoSwippable extends AppCompatActivity implements Slidr
             public void onSuccess() {
                 mAttacher = new PhotoViewAttacher(mImage);
                 mAttacher.setOnMatrixChangeListener(new MatrixChangeListener());
-                mAttacher.setOnPhotoTapListener(new PhotoTapListener());
                 circle.setVisibility(View.GONE);
                 mImage.post(new Runnable() {
                     @Override
@@ -201,22 +201,7 @@ public class ZoomablePicassoSwippable extends AppCompatActivity implements Slidr
         Log.d(TAG, "unlock in here");
     }
 
-    private class PhotoTapListener implements PhotoViewAttacher.OnPhotoTapListener {
-
-        @Override
-        public void onPhotoTap(View view, float x, float y) {
-            float xPercentage = x * 100f;
-            float yPercentage = y * 100f;
-            //    Tool.trace(zoomimage.this,  String.format(PHOTO_TAP_TOAST_STRING, xPercentage, yPercentage, view == null ? 0 : view.getId()));
-        }
-
-        @Override
-        public void onOutsidePhotoTap() {
-            
-        }
-    }
-
-    private class MatrixChangeListener implements PhotoViewAttacher.OnMatrixChangedListener {
+    private class MatrixChangeListener implements OnMatrixChangedListener {
 
         @Override
         public void onMatrixChanged(RectF rect) {

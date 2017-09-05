@@ -49,21 +49,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         mList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items));
         mList.setOnItemClickListener(this);
-
-//        SliderLayout sliderLayout = (SliderLayout) findViewById(R.id.slider_layout_framer_now);
-//
-//        ArrayList<AdjustableSlide> slide = new ArrayList<>();
-//        for (int i=1; i<4; i++) {
-//            AdjustableSlide adjustableSlide = new AdjustableSlide(this);
-//            adjustableSlide
-//                    .image("http://popbee.com/image/2017/01/non-traditional-wedding-dress-2017_00"+(20-(i-1))+"_image-"+i+".jpg")
-//                    .setScaleType(BaseSliderView.ScaleType.Fit)
-//                    .setCaption(String.valueOf(i));
-//            slide.add(adjustableSlide);
-//
-//            Log.d("MainActivity", "slide height = "+adjustableSlide.getSlideMeasuredHeight());
-//        }
-//        sliderLayout.loadSliderList(slide);
     }
 
 
