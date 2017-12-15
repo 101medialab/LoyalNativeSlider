@@ -17,13 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.hkm.slider.R;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
 import com.github.chrisbanes.photoview.OnMatrixChangedListener;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
+import com.hkm.slider.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by hesk on 15/12/15.
@@ -123,7 +122,7 @@ public class ZoomableView extends BaseSliderView {
         final LinearLayout cover = (LinearLayout) viewLayout.findViewById(R.id.ssz_bottom_caption);
         final ImageButton cornerbutton = (ImageButton) viewLayout.findViewById(R.id.ssz_frame_close_window_button);
         final ProgressBar circle = (ProgressBar) viewLayout.findViewById(R.id.ns_loading_progress);
-        final PhotoView mImage = (PhotoView) viewLayout.findViewById(R.id.ssz_uk_co_senab_photoview);
+        final PhotoView mImage = viewLayout.findViewById(R.id.ssz_uk_co_senab_photoview);
         final TextView mCurrMatrixTv = (TextView) viewLayout.findViewById(R.id.ssz_debug_textview);
         setDebugTextAdvance(mCurrMatrixTv, this);
         final PhotoViewAttacher mAttacher = new PhotoViewAttacher(mImage);
@@ -131,16 +130,14 @@ public class ZoomableView extends BaseSliderView {
         final TextView mCaptv = (TextView) viewLayout.findViewById(R.id.ssz_caption_textview);
         setCaptionTextviewAdvance(mCaptv, this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            LayoutTransition transitioner = new LayoutTransition();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                transitioner.enableTransitionType(LayoutTransition.CHANGING);
-            }
-            if (bottomFadeDescription) {
-                cover.setLayoutTransition(transitioner);
-            } else {
-                cover.setVisibility(View.GONE);
-            }
+        LayoutTransition transitioner = new LayoutTransition();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            transitioner.enableTransitionType(LayoutTransition.CHANGING);
+        }
+        if (bottomFadeDescription) {
+            cover.setLayoutTransition(transitioner);
+        } else {
+            cover.setVisibility(View.GONE);
         }
 
         if (corner_button_image_d != null) {
@@ -163,7 +160,7 @@ public class ZoomableView extends BaseSliderView {
             cornerbutton.setVisibility(View.GONE);
         }
 
-        Log.d(LOG_TAG, "load image with url : " + getUrl() + " title:" + getDescription());
+        Log.d(LOG_TAG, String.format("load image with url: %s title: %s", getUrl(), getDescription()));
         Picasso.with(mContext).load(getUrl()).into(mImage, new Callback() {
             @Override
             public void onSuccess() {
@@ -205,7 +202,6 @@ public class ZoomableView extends BaseSliderView {
     }
 
     protected void setDebugTextAdvance(final TextView debugfield, final BaseSliderView display) {
-
     }
 
     public class MatrixChangeListener implements OnMatrixChangedListener {
@@ -241,7 +237,7 @@ public class ZoomableView extends BaseSliderView {
 
 
     private void cover_off(LinearLayout cover, final ImageButton cornerButton) {
-        if (bottomFadeDescription && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1)
+        if (bottomFadeDescription)
             cover.animate().alpha(0f);
 
         if (animateCloseButton && cornerButton.getVisibility() != View.GONE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
@@ -254,7 +250,7 @@ public class ZoomableView extends BaseSliderView {
     }
 
     private void cover_on(LinearLayout cover, final ImageButton cornerButton) {
-        if (bottomFadeDescription && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1)
+        if (bottomFadeDescription)
             cover.animate().alpha(1f);
 
         if (animateCloseButton && cornerButton.getVisibility() != View.GONE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)

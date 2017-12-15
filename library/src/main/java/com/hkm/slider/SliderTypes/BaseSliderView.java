@@ -27,15 +27,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
 import com.hkm.slider.BuildConfig;
 import com.hkm.slider.CapturePhotoUtils;
 import com.hkm.slider.LoyalUtil;
@@ -339,91 +330,9 @@ public abstract class BaseSliderView {
         return this;
     }
 
-    public BaseSliderView resize(int targetWidth, int targetHeight) {
-        if (targetWidth < 0) {
-            throw new IllegalArgumentException("Width must be positive number or 0.");
-        }
-        if (targetHeight < 0) {
-            throw new IllegalArgumentException("Height must be positive number or 0.");
-        }
-        if (targetHeight == 0 && targetWidth == 0) {
-            throw new IllegalArgumentException("At least one dimension has to be positive number.");
-        }
-        mTargetWidth = targetWidth;
-        mTargetHeight = targetHeight;
-        return this;
-    }
-
     public BaseSliderView enableImageLocalStorage() {
         mImageLocalStorageEnable = true;
         return this;
-    }
-
-    protected void bindEventShowGlide(final View v, final ImageView targetImageView) {
-        RequestOptions requestOptions = new RequestOptions();
-
-        v.setOnClickListener(click_triggered);
-        RequestManager glideRM = Glide.with(mContext);
-        RequestBuilder rq;
-        if (mUrl != null) {
-            rq = glideRM.load(mUrl);
-        } else if (mFile != null) {
-            rq = glideRM.load(mFile);
-        } else if (mRes != 0) {
-            rq = glideRM.load(mRes);
-        } else {
-            return;
-        }
-
-        if (getEmpty() != 0) {
-            requestOptions.placeholder(getEmpty());
-        }
-        if (getError() != 0) {
-            requestOptions.error(getError());
-        }
-
-        switch (mScaleType) {
-            case Fit:
-                requestOptions.fitCenter();
-                break;
-            case CenterCrop:
-                requestOptions.centerCrop();
-                break;
-            case CenterInside:
-                requestOptions.fitCenter();
-                break;
-        }
-
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
-        if (mTargetWidth > 0 || mTargetHeight > 0) {
-            requestOptions.override(mTargetWidth, mTargetHeight);
-        }
-
-        rq.apply(requestOptions);
-
-        rq.listener(new RequestListener() {
-            @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target target, boolean isFirstResource) {
-                reportStatusEnd(false);
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(Object resource, Object model, com.bumptech.glide.request.target.Target target, DataSource dataSource, boolean isFirstResource) {
-                hideLoadingProgress(v);
-                triggerOnLongClick(v);
-                reportStatusEnd(true);
-                return false;
-            }
-        });
-        rq.transition(DrawableTransitionOptions.withCrossFade());
-
-        additionalGlideModifier(rq);
-        rq.into(targetImageView);
-    }
-
-    protected void additionalGlideModifier(RequestBuilder requestBuilder) {
-
     }
 
     protected void hideLoadingProgress(View mView) {

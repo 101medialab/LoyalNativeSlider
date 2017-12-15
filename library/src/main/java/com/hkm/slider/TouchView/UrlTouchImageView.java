@@ -28,7 +28,7 @@ public class UrlTouchImageView extends RelativeLayout {
 
     protected Context mContext;
     private String mImageUrl;
-    protected RequestBuilder<Bitmap> generator;
+    protected RequestBuilder<Bitmap> requestBuilder;
 
     public UrlTouchImageView(Context ctx) {
         super(ctx);
@@ -57,7 +57,7 @@ public class UrlTouchImageView extends RelativeLayout {
          * Callback method to be invoked when the global layout state or the visibility of views
          * within the view tree changes
          */
-        glide3();
+        initGlide();
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             public boolean onPreDraw() {
                 mImageView.getViewTreeObserver().removeOnPreDrawListener(this);
@@ -77,17 +77,16 @@ public class UrlTouchImageView extends RelativeLayout {
     }
 
     private void initLoadingRequest() {
-        generator.load(mImageUrl).into(mImageView);
+        requestBuilder.load(mImageUrl).into(mImageView);
     }
 
-    private void glide3() {
-        generator = Glide.with(mContext)
+    private void initGlide() {
+        requestBuilder = Glide.with(mContext)
                 .asBitmap()
-                .apply(new RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .apply(RequestOptions
+                        .diskCacheStrategyOf(DiskCacheStrategy.ALL)
                         .skipMemoryCache(true)
-                )
-                .listener(new RequestListener<Bitmap>() {
+                ).listener(new RequestListener<Bitmap>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
                         mImageView.setVisibility(GONE);
