@@ -22,17 +22,21 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.TransitionOptions;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestFutureTarget;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.hkm.slider.CapturePhotoUtils;
 import com.hkm.slider.LoyalUtil;
 import com.hkm.slider.R;
@@ -353,7 +357,9 @@ public abstract class BaseSliderView {
     protected void bindEventShowGlide(final View v, final ImageView targetImageView) {
         v.setOnClickListener(click_triggered);
         final RequestManager glideRM = Glide.with(mContext);
-        DrawableTypeRequest rq;
+        RequestBuilder<Drawable> rq;
+        RequestOptions requestOptions = new RequestOptions();
+
         if (mUrl != null) {
             rq = glideRM.load(mUrl);
         } else if (mFile != null) {
@@ -365,49 +371,50 @@ public abstract class BaseSliderView {
         }
 
         if (getEmpty() != 0) {
-            rq.placeholder(getEmpty());
+            requestOptions.placeholder(getEmpty());
         }
         if (getError() != 0) {
-            rq.error(getError());
+            requestOptions.error(getError());
         }
 
         switch (mScaleType) {
             case Fit:
-                rq.fitCenter();
+                requestOptions.fitCenter();
                 break;
             case CenterCrop:
-                rq.centerCrop();
+                requestOptions.centerCrop();
                 break;
             case CenterInside:
-                rq.fitCenter();
+                requestOptions.fitCenter();
                 break;
         }
-        rq.diskCacheStrategy(DiskCacheStrategy.ALL);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
         if (mTargetWidth > 0 || mTargetHeight > 0) {
-            rq.override(mTargetWidth, mTargetHeight);
+            requestOptions.override(mTargetWidth, mTargetHeight);
         }
-        rq.listener(new RequestListener<String, GlideDrawable>() {
+        rq.listener(new RequestListener<Drawable>() {
+
             @Override
-            public boolean onException(Exception e, String model, com.bumptech.glide.request.target.Target<GlideDrawable> target, boolean isFirstResource) {
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target<Drawable> target, boolean isFirstResource) {
                 reportStatusEnd(false);
                 return false;
             }
 
-
             @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, com.bumptech.glide.request.target.Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+            public boolean onResourceReady(Drawable resource, Object model, com.bumptech.glide.request.target.Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                 hideLoadingProgress(v);
                 triggerOnLongClick(v);
                 reportStatusEnd(true);
                 return false;
             }
         });
-        rq.crossFade();
+        rq.transition(new DrawableTransitionOptions().crossFade());
+        rq.apply(requestOptions);
         additionalGlideModifier(rq);
         rq.into(targetImageView);
     }
 
-    protected void additionalGlideModifier(DrawableTypeRequest mDrawableTypeRequest) {
+    protected void additionalGlideModifier(RequestBuilder mDrawableTypeRequest) {
 
     }
 

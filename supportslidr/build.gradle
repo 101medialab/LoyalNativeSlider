@@ -23,5 +23,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':library')
     compile supportDependencies.appCompat
-    compile 'com.r0adkll:slidableactivity:2.0.4'
+    compile 'com.r0adkll:slidableactivity:2.0.5'
 }
