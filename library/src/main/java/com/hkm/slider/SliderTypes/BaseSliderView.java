@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Typeface;
 import android.support.v4.app.ActivityCompat;
@@ -20,7 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -70,9 +70,9 @@ public abstract class BaseSliderView {
     private int mEmptyPlaceHolderRes;
 
     private String mCaption;
-    private String mUrl;
-    private File mFile;
-    private int mRes;
+    protected String mUrl;
+    protected File mFile;
+    protected int mRes;
     private int mSlideNumber;
     private int mSlideHeight;
     protected OnSliderClickListener mOnSliderClickListener;
@@ -346,7 +346,7 @@ public abstract class BaseSliderView {
      *
      * @param mView the slider view object
      */
-    private void triggerOnLongClick(View mView) {
+    protected void triggerOnLongClick(View mView) {
         if (mLongClickSaveImage && fmg != null) {
             if (mDefaultLongClickListener != null) {
                 mView.setOnLongClickListener(mDefaultLongClickListener);
@@ -471,7 +471,7 @@ public abstract class BaseSliderView {
         return mImageView;
     }
 
-    private void reportStatusEnd(boolean b) {
+    protected void reportStatusEnd(boolean b) {
         if (mLoadListener != null) {
             mLoadListener.onEnd(b, this);
         }

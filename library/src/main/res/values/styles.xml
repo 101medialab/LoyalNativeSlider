@@ -63,9 +63,9 @@
     </style>
 
 
-    <style name="tintImageView" parent="android:style/Widget.Holo.ActionButton">
-        <item name="paddingStart">5dp</item>
-        <item name="paddingEnd">5dp</item>
+    <style name="zoomableSlideCloseButton" parent="android:style/Widget.Holo.ActionButton">
+        <item name="android:paddingStart">5dp</item>
+        <item name="android:paddingEnd">5dp</item>
         <item name="android:scaleType">centerInside</item>
         <item name="android:gravity">center_vertical</item>
     </style>

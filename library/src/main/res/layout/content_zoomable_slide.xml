@@ -46,9 +46,9 @@
             android:textAllCaps="true" />
     </LinearLayout>
 
-    <ImageButton
+    <AppCompatImageButton
         android:id="@id/ssz_frame_close_window_button"
-        style="@style/tintImageView"
+        style="@style/zoomableSlideCloseButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
